@@ -18,13 +18,13 @@ int main(int __attribute__((unused)) argc, char *argv[])
 		if (isatty(STDIN_FILENO) == 1) /* if a fd is a terminal */
 			write(1, "x_x $ ", 7); /* write to standard output */
 
+		characters = getline(&input, &size, stdin);
 		if (characters == -1)
 		{
 			if (isatty(STDIN_FILENO) == 1)
 				write(1, "\n", 1);
 			break;
 		}
-		characters = getline(&input, &size, stdin);
 
 		if (input[characters - 1]  == '\n') /* when '\n', write '\0' */
 			input[characters - 1]  = '\0';
