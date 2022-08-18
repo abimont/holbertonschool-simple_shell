@@ -1,0 +1,47 @@
+.TH man 8 "18 Aug 2022" "1.0" "Shell - Man Page"
+.SH NAME
+shell \- command interpreter. 
+.SH SYNOPSIS
+[ command ]
+[ arguments... ]
+.SH DESCRIPTION
+Shell is a program that takes commands from the keyboard and gives them to the operating system to perform.
+.SH OVERVIEW
+The shell is a command that reads lines from either a file or the terminal, interprets them, and generally executes other commands. It is the program that is running when a user logs into the system (although a user can select a different shell with the chsh(1) command).  The shell implements a language that has flow control constructs, a macro facility that provides a variety of features in addition to data storage, along with built in history and line editing capabilities. It incorporates many features to aid interactive use and has the advantage that the interpretative language is common to both interactive and non-interactive use (shell scripts).  That is, commands can be typed directly to the running shell or can be put into a file and the file can be executed directly by the shell.
+.SH SEARCH AND EXECUTION
+There are three types of commands: shell functions, builtin commands, and normal programs -- and the command is searched for (by name) in that order. They each are executed in a different way. 
+
+When a shell function is executed, all of the shell positional parameters (except $0, which remains unchanged) are set to the arguments of the shell function. The variables which are explicitly placed in the environment of the command (by placing assignments to them before the function name) are made local to the function and are set to the values given.  Then the command given in the function definition is executed.  The positional parameters are restored to their original values when the command completes. This all occurs within the current shell.
+
+Shell builtins are executed internally to the shell, without spawning a new process.
+
+Otherwise, if the command name doesn't match a function or builtin, the command is searched for as a normal program in the file system (as described in the next section). When a normal program is executed, the shell runs the program, passing the arguments and the environment to the program. If the program is not a normal executable file (i.e., if it does not begin with the "magic number" whose ASCII representation is "#!", so execve(2) returns ENOEXEC then) the shell will interpret the program in a subshell.  The child shell will reinitialize itself in this case, so that the effect will be as if a new shell had been invoked to handle the ad-hoc shell script, except that the location of hashed commands located in the parent shell will be remembered by the child.
+.SH PATH SEARCH
+When locating a command, the shell first looks to see if it has a shell function by that name.  Then it looks for a builtin command by that name. If a builtin command is not found, one of two things happen:
+.TP
+.BR 1.
+Command names containing a slash are simply executed without performing any searches.
+.TP
+.BR 2.	
+The shell searches each entry in PATH in turn for the command.  The value of the PATH variable should be a series of entries separated by colons. Each entry consists of a directory name. The current directory may be indicated implicitly by an empty directory name, or explicitly by a single period.
+.SH ENVIRONMENT
+.TP
+.BR PATH
+The default search path for executables.  See the above section Path Search.
+.TP
+.BR PPID
+The process ID of the parent process of the shell.
+.TP
+.BR PWD
+The logical value of the current working directory.  This is set by the cd command.
+.SH EXIT STATUS
+Errors that are detected by the shell, such as a syntax error, will cause the shell to exit with a non-zero exit status.  If the shell is not an interactive shell, the execution of the shell file will be aborted.  Otherwise the shell will return the exit status of the last command executed, or if the exit builtin is used with a numeric argument, it will return the argument.
+
+Each command has an exit status that can influence the behaviour of other shell commands.  The paradigm is that a command exits with zero for normal or success, and non-zero for failure, error, or a false indication. The man page for each command should indicate the various exit codes and what they mean. Additionally, the builtin commands return exit codes, as does an executed shell function.
+
+.SH AUTHORS
+.TP 
+Abigail Montes (5179@holbertonstudents.com)
+
+.TP 
+Miguel Torres (5178@holbertonstudents.com)
