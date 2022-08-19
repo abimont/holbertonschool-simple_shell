@@ -79,16 +79,15 @@ int command_read(char *input, size_t __attribute__((unused))characters)
 	char *token = NULL;
 	char *cmd_arr[100];
 	int index = 0;
-	char *space = " ";
 
 	if (strcmp(input, "exit") == 0)
 		return (2);
 	if (strcmp(input, "env") == 0)
 		return (_printenv());
 
-	if (strcmp(input, space) == 0)
+	if (input[0] == 32)
         {
-                write(STDOUT_FILENO, "Arguments not received\n", 24);
+                input = NULL;
 		return (1);
         }
 	token = strtok(input, " ");
