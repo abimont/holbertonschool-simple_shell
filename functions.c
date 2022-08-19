@@ -12,10 +12,10 @@ char *command_path(char *cmd)
 	char *new_path = NULL;
 	struct stat buf;
 
-	path = strdup(_getenv("PATH")); /* gets a dup of PATH */
+	path = strdup(getenv("PATH")); /* gets a dup of PATH */
 	tokens = strtok(path, ":"); /* split the path in a set of tokens */
 	new_path = malloc(sizeof(char) * 100);
-	if (_getenv("PATH")[0] == ':')
+	if (getenv("PATH")[0] == ':')
 		if (stat(cmd, &buf) == 0) /* in case of success */
 			return (strdup(cmd)); /* return a copy of command */
 
@@ -69,23 +69,6 @@ int _printenv(void)
 }
 
 /**
- * _getenv - gets the environment variables
- * @name: PATH
- * Return: the PATH
- */
-char *_getenv(char *name)
-{
-	int index = 0;
-	int len_name = strlen(name);
-
-	for (index = 0; environ[index] != NULL; index++)
-		if (strncmp(environ[index], name, strlen(name)) == 0)
-			return (&environ[index][len_name]);
-
-	return (NULL);
-}
-
-/**
  * command_read - function that reads the command
  * @input: the input command
  * @characters: unused
@@ -95,13 +78,21 @@ int command_read(char *input, size_t __attribute__((unused))characters)
 {
 	char *token = NULL;
 	char *cmd_arr[100];
-	int index;
+	int index = 0;
+	char *space = " ";
 
 	if (strcmp(input, "exit") == 0)
 		return (2);
 	if (strcmp(input, "env") == 0)
 		return (_printenv());
-	token = strtok(input, " "), index = 0;
+
+	if (strcmp(input, space) == 0)
+        {
+                write(STDOUT_FILENO, "Arguments not received\n", 24);
+		return (1);
+        }
+	token = strtok(input, " ");
+
 	while (token)
 	{
 		cmd_arr[index++] = token;
