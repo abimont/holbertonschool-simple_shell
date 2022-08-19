@@ -81,7 +81,10 @@ int command_read(char *input, size_t __attribute__((unused))characters)
 	int index = 0;
 
 	if (strcmp(input, "exit") == 0)
+	{
+		write(1, "\nSee you soon!\n\n", 17); 
 		return (2);
+	}
 	if (strcmp(input, "env") == 0)
 		return (_printenv());
 
