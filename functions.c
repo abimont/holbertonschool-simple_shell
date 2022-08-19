@@ -115,6 +115,7 @@ int execute(char *cmd_arr[])
 	char *cmd = NULL;
 	pid_t pid;
 	int status;
+	int exit_st = 0;
 
 	cmd = cmd_arr[0];
 	exe_path = command_path(cmd);
@@ -124,8 +125,9 @@ int execute(char *cmd_arr[])
 		write(2, ": ", 2);
 		write(2, cmd, strlen(cmd));
 		write(2, ": not found\n", 12);
-
-		return (3);
+		
+		exit_st = WEXITSTATUS(status);
+		return (exit_st);
 	}
 	pid = fork();
 	if (pid < 0)
