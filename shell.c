@@ -34,9 +34,7 @@ int main(int __attribute__((unused)) argc, char *argv[])
 			continue;
 		if (command_read(input, characters) == 2) /* in case of exit */
 			break;
-		else 
-			continue;
-		}
+	}
 
 	free(input);
 	input = NULL;
@@ -45,5 +43,4 @@ int main(int __attribute__((unused)) argc, char *argv[])
 
 	return (exitst);
 
-	
 }
