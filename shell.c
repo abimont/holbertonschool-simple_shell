@@ -10,6 +10,8 @@ int main(int __attribute__((unused)) argc, char *argv[])
 	char *input = NULL;
 	size_t size = 0;
 	ssize_t characters = 0;
+	int status = 0;
+	int exitst = 0;
 
 	name = argv[0];
 
@@ -39,5 +41,9 @@ int main(int __attribute__((unused)) argc, char *argv[])
 	free(input);
 	input = NULL;
 
-	return (0);
+	exitst = WEXITSTATUS(status);
+
+	return (exitst);
+
+	
 }
